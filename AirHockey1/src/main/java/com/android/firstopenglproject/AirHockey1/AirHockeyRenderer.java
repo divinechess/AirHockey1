@@ -7,10 +7,10 @@ package com.android.firstopenglproject.AirHockey1;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView.Renderer;
-import android.util.Log;
 
 import com.airhockey.android.R;
 import com.android.firstopenglproject.AirHockey1.com.airhockey.android.util.LoggerConfig;
+import com.android.firstopenglproject.AirHockey1.com.airhockey.android.util.ShaderHelper;
 import com.android.firstopenglproject.AirHockey1.com.airhockey.android.util.TextResourceReader;
 
 import java.nio.ByteBuffer;
@@ -19,11 +19,6 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-
-import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
-import static android.opengl.GLES20.glClear;
-import static android.opengl.GLES20.glClearColor;
-import static android.opengl.GLES20.glViewport;
 
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
 import static android.opengl.GLES20.GL_FLOAT;
@@ -43,6 +38,7 @@ import static android.opengl.GLES20.glViewport;
 
 
 
+
 public class AirHockeyRenderer implements Renderer {
 
         private static final String A_POSITION = "a_Position";
@@ -59,24 +55,22 @@ public class AirHockeyRenderer implements Renderer {
             this.context = context;
             float[] tableVerticesWithTriangles = {
                     // Triangle 1
-                    0f,  0f,
-                    9f, 14f,
-                    0f, 14f,
+                    -0.5f, -0.5f,
+                    0.5f,  0.5f,
+                    -0.5f,  0.5f,
 
                     // Triangle 2
-                    0f,  0f,
-                    9f,  0f,
-                    9f, 14f,
-
+                    -0.5f, -0.5f,
+                    0.5f, -0.5f,
+                    0.5f,  0.5f,
 
                     // Line 1
-                    0f,  7f,
-                    9f,  7f,
+                    -0.5f, 0f,
+                    0.5f, 0f,
 
                     // Mallets
-                    4.5f,  2f,
-                    4.5f, 12f
-
+                    0f, -0.25f,
+                    0f,  0.25f
             };
 
             vertexData = ByteBuffer
@@ -93,20 +87,20 @@ public class AirHockeyRenderer implements Renderer {
             // Set the background clear color to red. The first component is
             // red, the second is green, the third is blue, and the last
             // component is alpha, which we don't use in this lesson.
-            glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+            glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
             String vertexShaderSource = TextResourceReader
                     .readTextFileFromResource(context, R.raw.simple_vertex_shader);
             String fragmentShaderSource = TextResourceReader
                     .readTextFileFromResource(context, R.raw.simple_fragment_shader);
 
-            int vertexShader = com.android.firstopenglproject.AirHockey1.ShaderHelper.compileVertexShader(vertexShaderSource);
-            int fragmentShader = com.android.firstopenglproject.AirHockey1.ShaderHelper.compileFragmentShader(fragmentShaderSource);
+            int vertexShader = ShaderHelper.compileVertexShader(vertexShaderSource);
+            int fragmentShader = ShaderHelper.compileFragmentShader(fragmentShaderSource);
 
-            program = com.android.firstopenglproject.AirHockey1.ShaderHelper.linkProgram(vertexShader, fragmentShader);
+            program = ShaderHelper.linkProgram(vertexShader, fragmentShader);
 
                 if (LoggerConfig.ON){
-                    com.android.firstopenglproject.AirHockey1.ShaderHelper.validateProgram(program);
+                   ShaderHelper.validateProgram(program);
                 }
             glUseProgram(program);
 
@@ -117,6 +111,9 @@ public class AirHockeyRenderer implements Renderer {
             vertexData.position(0);
             glVertexAttribPointer(aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT,
                     false, 0, vertexData);
+
+            glEnableVertexAttribArray(aPositionLocation);
+
         }
 
         @Override
@@ -128,24 +125,32 @@ public class AirHockeyRenderer implements Renderer {
         public void onDrawFrame(GL10 glUnused) {
             // Clear the rendering surface.
             glClear(GL_COLOR_BUFFER_BIT);
+
+            glEnableVertexAttribArray(aPositionLocation);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+
+            // Draw the table.
+            glUniform4f(uColorLocation, 1.0f, 1.0f, 1.0f, 1.0f);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            // Draw the center dividing line.
+            glUniform4f(uColorLocation, 1.0f, 0.0f, 0.0f, 1.0f);
+            glDrawArrays(GL_LINES, 6, 2);
+
+
+
+            // Draw the first mallet blue.
+            glUniform4f(uColorLocation, 0.0f, 0.0f, 1.0f, 1.0f);
+            glDrawArrays(GL_POINTS, 8, 1);
+
+            // Draw the second mallet red.
+            glUniform4f(uColorLocation, 1.0f, 0.0f, 0.0f, 1.0f);
+            glDrawArrays(GL_POINTS, 9, 1);
+
         }
 
-        /**
-         * Validates an OpenGL program. Should only be called when developing the
-        * application.
-        */
-        public static boolean validateProgram(int programObjectId) {
-        glValidateProgram(programObjectId);
 
-        final int[] validateStatus = new int[1];
-        glGetProgramiv(programObjectId, GL_VALIDATE_STATUS, validateStatus, 0);
-        Log.v(TAG, "Results of validating program: " + validateStatus[0]
-                + "\nLog:" + glGetProgramInfoLog(programObjectId));
-
-        return validateStatus[0] != 0;
-
-
-        }
 
 
 

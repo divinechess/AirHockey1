@@ -1,9 +1,25 @@
-package com.android.firstopenglproject.AirHockey1;
+package com.android.firstopenglproject.AirHockey1.com.airhockey.android.util;
 
 import android.util.Log;
 
-import com.android.firstopenglproject.AirHockey1.com.airhockey.android.util.LoggerConfig;
-
+import static android.opengl.GLES20.GL_COMPILE_STATUS;
+import static android.opengl.GLES20.GL_FRAGMENT_SHADER;
+import static android.opengl.GLES20.GL_LINK_STATUS;
+import static android.opengl.GLES20.GL_VALIDATE_STATUS;
+import static android.opengl.GLES20.GL_VERTEX_SHADER;
+import static android.opengl.GLES20.glAttachShader;
+import static android.opengl.GLES20.glCompileShader;
+import static android.opengl.GLES20.glCreateProgram;
+import static android.opengl.GLES20.glCreateShader;
+import static android.opengl.GLES20.glDeleteProgram;
+import static android.opengl.GLES20.glDeleteShader;
+import static android.opengl.GLES20.glGetProgramInfoLog;
+import static android.opengl.GLES20.glGetProgramiv;
+import static android.opengl.GLES20.glGetShaderInfoLog;
+import static android.opengl.GLES20.glGetShaderiv;
+import static android.opengl.GLES20.glLinkProgram;
+import static android.opengl.GLES20.glShaderSource;
+import static android.opengl.GLES20.glValidateProgram;
 
 /**
  * Created by john on 10/02/2016.
@@ -43,14 +59,13 @@ public class ShaderHelper {
             return 0;
         }
 
-    return shaderObjectId; //my version of what I think it does
+        //return shaderObjectId; //my version of what I think it does
 
     glShaderSource(shaderObjectId, shaderCode);
     glCompileShader(shaderObjectId);
 
     final int[] compileStatus = new int[1];
-
-    glGetshaderiv(shaderObjectId, GL_COMPILE_STATUS, compileStatus, 0);
+    glGetShaderiv(shaderObjectId, GL_COMPILE_STATUS, compileStatus, 0);
 
         if (LoggerConfig.ON) {
             // Print the program info log to the Android log output.
@@ -75,7 +90,6 @@ public class ShaderHelper {
     public static int  linkProgram(int vertexShaderId, int fragmentShaderId) {
 
 
-
         final int programObjectId = glCreateProgram();
 
         if (programObjectId == 0) {
@@ -88,31 +102,46 @@ public class ShaderHelper {
 
         }
 
-    glAttachShader(programObjectId, vertexShaderId);
-    glAttachShader(programObjectId, fragmentShaderId);
+        glAttachShader(programObjectId, vertexShaderId);
+        glAttachShader(programObjectId, fragmentShaderId);
 
-    glLinkProgram(programObjectId);
+        glLinkProgram(programObjectId);
 
-    final int[] linkStatus = new int[1];
+        final int[] linkStatus = new int[1];
 
-    glGetProgramiv(programObjectId, GL_LINK_STATUS, linkStatus, 0);
+        glGetProgramiv(programObjectId, GL_LINK_STATUS, linkStatus, 0);
 
         if (LoggerConfig.ON) {
             Log.v(TAG, "Results of linking program:\n"
-                + glGetProgramInfoLog(programObjectId));
+                    + glGetProgramInfoLog(programObjectId));
         }
 
 
         if (linkStatus[0] == 0) {
             glDeleteProgram(programObjectId);
-            if (LoggerConfig.ON) ;
-            log.w(TAG, "Linking of program failed.");
+            if (LoggerConfig.ON) {
+                Log.w(TAG, "Linking of program failed.");
             }
             return 0;
 
 
-        return programObjectId;
         }
+        return programObjectId;
+    }
+
+    /**
+     * Validates an OpenGL program. Should only be called when developing the
+     * application.
+     */
+    public static boolean validateProgram(int programObjectId) {
+        glValidateProgram(programObjectId);
+
+        final int[] validateStatus = new int[1];
+        glGetProgramiv(programObjectId, GL_VALIDATE_STATUS, validateStatus, 0);
+        Log.v(TAG, "Results of validating program: " + validateStatus[0]
+                + "\nLog:" + glGetProgramInfoLog(programObjectId));
+
+        return validateStatus[0] != 0;
     }
 
 
