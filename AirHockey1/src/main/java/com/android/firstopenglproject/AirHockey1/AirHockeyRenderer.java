@@ -16,6 +16,7 @@ import com.android.firstopenglproject.AirHockey1.com.airhockey.android.util.Text
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -51,34 +52,38 @@ public class AirHockeyRenderer implements Renderer {
         private final FloatBuffer vertexData;
         private final Context context;
 
+
         public AirHockeyRenderer(Context context) {
             this.context = context;
-            float[] tableVerticesWithTriangles = {
-                    // Triangle 1
-                    -0.5f, -0.5f,
-                    0.5f,  0.5f,
-                    -0.5f,  0.5f,
+            OBJLoader.loadMesh("box.obj");
 
-                    // Triangle 2
-                    -0.5f, -0.5f,
-                    0.5f, -0.5f,
-                    0.5f,  0.5f,
-
-                    // Line 1
-                    -0.5f, 0f,
-                    0.5f, 0f,
-
-                    // Mallets
-                    0f, -0.25f,
-                    0f,  0.25f
-            };
-
+//            float[] tableVerticesWithTriangles = {
+//                    // Triangle 1
+//                    -0.5f, -0.5f,
+//                    0.5f,  0.5f,
+//                    -0.5f,  0.5f,
+//
+//                    // Triangle 2
+//                    -0.5f, -0.5f,
+//                    0.5f, -0.5f,
+//                    0.5f,  0.5f,
+//
+//                    // Line 1
+//                    -0.5f, 0f,
+//                    0.5f, 0f,
+//
+//                    // Mallets
+//                    0f, -0.25f,
+//                    0f,  0.25f
+//            };
+        }
+            public AirHockeyRenderer(Float[] vertices, int[] indices) {
             vertexData = ByteBuffer
-                    .allocateDirect(tableVerticesWithTriangles.length * BYTES_PER_FLOAT)
+                    .allocateDirect(vertices.length * BYTES_PER_FLOAT)
                     .order(ByteOrder.nativeOrder())
                     .asFloatBuffer();
 
-            vertexData.put(tableVerticesWithTriangles);
+            vertexData.put(vertices);
         }
 
 
@@ -149,7 +154,6 @@ public class AirHockeyRenderer implements Renderer {
             glDrawArrays(GL_POINTS, 9, 1);
 
         }
-
 
 
 

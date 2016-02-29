@@ -1,3 +1,9 @@
+package com.android.firstopenglproject.AirHockey1;
+
+import android.content.Context;
+
+import com.android.firstopenglproject.AirHockey1.com.airhockey.android.util.ShaderHelper;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,10 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
 import java.lang.Float;
-
+import java.lang.String;
 
 public class OBJLoader {
-    public static Mesh loadMesh(String fileName)
+
+
+    public static AirHockeyRenderer loadMesh(String fileName)
     {
         String[] splitArray = fileName.split("\\.");
         String ext = splitArray[splitArray.length - 1];
@@ -25,7 +33,7 @@ public class OBJLoader {
         int vertexIndex = 0;
         int indicesIndex = 0;
         Integer indices [] = null; //check integer type
-
+        int result [] = null;
 
         BufferedReader meshReader = null;
 
@@ -36,13 +44,13 @@ public class OBJLoader {
 
             while((line = meshReader.readLine()) != null) {
                 String[] tokens = line.split(" ");
-                tokens = Util.removeEmptyStrings(tokens);
+                tokens = ShaderHelper.removeEmptyStrings(tokens);
 
                 if (tokens.length == 0 || tokens[0].equals("#"))
                     continue;
                 else if (tokens[0].equals("v"))
                 {
-                    vertices[vertexIndex    ] = Float.parseFloat(tokens[1]); // how big is array in loop?
+                    vertices[vertexIndex] = Float.parseFloat(tokens[1]); // how big is array in loop?
                     vertices[vertexIndex + 1] = Float.parseFloat(tokens[2]);
                     vertices[vertexIndex + 2] = Float.parseFloat(tokens[3]);
                     vertexIndex += 3;
@@ -67,16 +75,14 @@ public class OBJLoader {
 
             meshReader.close();
 
-            Mesh res = new Mesh();
-            Float [] vertex = new Float[vertices.length];
-            vertices.push(vertex);
+//           newRes = AirHockeyRenderer(vertices , ShaderHelper.toIntArray(indices));
+            result = ShaderHelper.toIntArray(indices); //result is now int array
+          newRes =  new AirHockeyRenderer(vertices, result);
 
-            Integer[] indexData = new Integer[indices.size()];
-            indices.toArray(indexData);
 
-            res.addVertices(vertexData, Util.toIntArray(indexData));
 
-            return res;
+
+            return newRes;
         }
         catch(Exception e)
         {
