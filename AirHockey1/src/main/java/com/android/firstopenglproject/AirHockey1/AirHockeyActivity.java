@@ -1,4 +1,4 @@
-package com.android.firstopenglproject.AirHockey1;
+package com.android.firstopenglproject.AirHockey1; //lets update to airhockey2
 
 import android.app.ActivityManager;
 import android.content.Context;

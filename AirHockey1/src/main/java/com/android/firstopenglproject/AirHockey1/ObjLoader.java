@@ -1,25 +1,16 @@
 package com.android.firstopenglproject.AirHockey1;
 
-import android.content.Context;
-
 import com.android.firstopenglproject.AirHockey1.com.airhockey.android.util.ShaderHelper;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.io.IOException;
-import java.lang.Float;
-import java.lang.String;
 
-public class OBJLoader {
+class OBJLoader { //this was public class previously
 
 
     public static AirHockeyRenderer loadMesh(String fileName)
     {
-        String[] splitArray = fileName.split("\\.");
+        String[] splitArray = fileName.split("//.");
         String ext = splitArray[splitArray.length - 1];
 
         if(!ext.equals("obj"))
@@ -29,7 +20,7 @@ public class OBJLoader {
             System.exit(1);
         }
 
-        Float vertices [] = null; //check these later and if we need wrapper
+        float vertices [] = null; //check these later and if we need wrapper
         int vertexIndex = 0;
         int indicesIndex = 0;
         Integer indices [] = null; //check integer type
@@ -39,7 +30,7 @@ public class OBJLoader {
 
         try
         {
-            meshReader = new BufferedReader(new FileReader("./res/models/" + fileName));
+            meshReader = new BufferedReader(new FileReader("./res/models/box.obj"));
             String line;
 
             while((line = meshReader.readLine()) != null) {
@@ -77,13 +68,13 @@ public class OBJLoader {
 
 //           newRes = AirHockeyRenderer(vertices , ShaderHelper.toIntArray(indices));
             result = ShaderHelper.toIntArray(indices); //result is now int array
-          newRes =  new AirHockeyRenderer(vertices, result);
+            new AirHockeyRenderer(vertices,result);
 
 
 
 
-            return newRes;
-        }
+
+                    }
         catch(Exception e)
         {
             e.printStackTrace();
