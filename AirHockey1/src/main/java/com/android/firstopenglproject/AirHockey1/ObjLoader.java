@@ -3,22 +3,23 @@ package com.android.firstopenglproject.AirHockey1;
 import com.android.firstopenglproject.AirHockey1.com.airhockey.android.util.ShaderHelper;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
-
-class OBJLoader { //this was public class previously
 
 
-    public static AirHockeyRenderer loadMesh(String fileName)
+
+public class  OBJLoader { //this was public class previously
+
+
+    public static int loadMesh(String fileName)
     {
-        String[] splitArray = fileName.split("//.");
-        String ext = splitArray[splitArray.length - 1];
+//        String[] splitArray = fileName.split("//.");
+//        String ext = splitArray[splitArray.length - 1];
 
-        if(!ext.equals("obj"))
-        {
-            System.err.println("Error: File format not supported for mesh data: " + ext);
-            new Exception().printStackTrace();
-            System.exit(1);
-        }
+//        if(!ext.equals("obj"))
+//        {
+//            System.err.println("Error: File format not supported for mesh data: " + ext);
+//            new Exception().printStackTrace();
+//            System.exit(1);
+//        }
 
         float vertices [] = null; //check these later and if we need wrapper
         int vertexIndex = 0;
@@ -28,12 +29,12 @@ class OBJLoader { //this was public class previously
 
         BufferedReader meshReader = null;
 
-        try
-        {
-            meshReader = new BufferedReader(new FileReader("./res/models/box.obj"));
-            String line;
+       try
+       {
+//            meshReader = new BufferedReader(new FileReader("./res/models/box.obj"));
+            String line = null;
 
-            while((line = meshReader.readLine()) != null) {
+            while((fileName = meshReader.readLine()) != null) {
                 String[] tokens = line.split(" ");
                 tokens = ShaderHelper.removeEmptyStrings(tokens);
 
@@ -64,11 +65,11 @@ class OBJLoader { //this was public class previously
                 }
             }
 
-            meshReader.close();
+//            meshReader.close();
 
 //           newRes = AirHockeyRenderer(vertices , ShaderHelper.toIntArray(indices));
             result = ShaderHelper.toIntArray(indices); //result is now int array
-            new AirHockeyRenderer(vertices,result);
+            new  AirHockeyRenderer(vertices,result);
 
 
 
@@ -78,9 +79,10 @@ class OBJLoader { //this was public class previously
         catch(Exception e)
         {
             e.printStackTrace();
-            System.exit(1);
+          System.exit(1);
         }
 
-        return null;
-    }
+          return int;
+//   }
+
 }

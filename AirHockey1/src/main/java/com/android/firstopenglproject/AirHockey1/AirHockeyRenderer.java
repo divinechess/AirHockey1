@@ -55,8 +55,8 @@ public class AirHockeyRenderer implements Renderer {
 
         public AirHockeyRenderer(Context context) {
             this.context = context;
-            OBJLoader.loadMesh("box.obj");
-
+ //           OBJLoader.loadMesh("box.obj");
+//
 //            float[] tableVerticesWithTriangles = {
 //                    // Triangle 1
 //                    -0.5f, -0.5f,
@@ -111,8 +111,12 @@ public class AirHockeyRenderer implements Renderer {
                     .readTextFileFromResource(context, R.raw.simple_vertex_shader);
             String fragmentShaderSource = TextResourceReader
                     .readTextFileFromResource(context, R.raw.simple_fragment_shader);
+            String objSource = TextResourceReader
+                .readTextFileFromResource(context, R.Models.box);
 
-            int vertexShader = ShaderHelper.compileVertexShader(vertexShaderSource);
+        OBJLoader.loadMesh(objSource);
+
+        int vertexShader = ShaderHelper.compileVertexShader(vertexShaderSource);
             int fragmentShader = ShaderHelper.compileFragmentShader(fragmentShaderSource);
 
             program = ShaderHelper.linkProgram(vertexShader, fragmentShader);
