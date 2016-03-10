@@ -2,8 +2,6 @@ package com.android.firstopenglproject.AirHockey1.com.airhockey.android.util;
 
 import android.util.Log;
 
-import java.util.ArrayList;
-
 import static android.opengl.GLES20.GL_COMPILE_STATUS;
 import static android.opengl.GLES20.GL_FRAGMENT_SHADER;
 import static android.opengl.GLES20.GL_LINK_STATUS;
@@ -63,11 +61,11 @@ public class ShaderHelper {
 
         //return shaderObjectId; //my version of what I think it does
 
-    glShaderSource(shaderObjectId, shaderCode);
-    glCompileShader(shaderObjectId);
+        glShaderSource(shaderObjectId, shaderCode);
+        glCompileShader(shaderObjectId);
 
-    final int[] compileStatus = new int[1];
-    glGetShaderiv(shaderObjectId, GL_COMPILE_STATUS, compileStatus, 0);
+        final int[] compileStatus = new int[1];
+        glGetShaderiv(shaderObjectId, GL_COMPILE_STATUS, compileStatus, 0);
 
         if (LoggerConfig.ON) {
             // Print the program info log to the Android log output.
@@ -144,34 +142,7 @@ public class ShaderHelper {
                 + "\nLog:" + glGetProgramInfoLog(programObjectId));
 
         return validateStatus[0] != 0;
-
     }
-
-    public static String[] removeEmptyStrings(String[] data)
-    {
-        ArrayList<String> result = new ArrayList<String>();
-
-        for(int i = 0; i < data.length; i++)
-            if(!data[i].equals(""))
-                result.add(data[i]);
-
-        String[] res = new String[result.size()];
-        result.toArray(res);
-
-        return res;
-    }
-
-    public static int[] toIntArray(Integer[] data)
-    {
-        int[] result = new int[data.length];
-
-        for(int i = 0; i < data.length; i++)
-            result[i] = data[i].intValue();
-
-        return result;
-    }
-
-
 
 
 

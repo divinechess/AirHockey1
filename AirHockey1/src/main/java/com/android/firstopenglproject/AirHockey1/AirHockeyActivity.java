@@ -1,4 +1,4 @@
-package com.android.firstopenglproject.AirHockey1; //lets update to airhockey2
+package com.android.firstopenglproject.AirHockey1;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -32,12 +32,12 @@ public class AirHockeyActivity extends AppCompatActivity {
 
         final boolean supportsEs2 =
                 configurationInfo.reqGlEsVersion >= 0x20000
-                || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1
-                &&(Build.FINGERPRINT.startsWith("generic")
-                 || Build.FINGERPRINT.startsWith("unknown")
-                 || Build.MODEL.contains("google_sdk")
-                 || Build.MODEL.contains("Emulator")
-                 || Build.MODEL.contains("Android SDK built for x86")));
+                        || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1
+                        &&(Build.FINGERPRINT.startsWith("generic")
+                        || Build.FINGERPRINT.startsWith("unknown")
+                        || Build.MODEL.contains("google_sdk")
+                        || Build.MODEL.contains("Emulator")
+                        || Build.MODEL.contains("Android SDK built for x86")));
 
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -47,7 +47,7 @@ public class AirHockeyActivity extends AppCompatActivity {
         //fab.setOnClickListener(new View.OnClickListener() {
 
 
-            if (supportsEs2) {
+        if (supportsEs2) {
             // Request an OpenGL ES 2.0 compatible context.
             glSurfaceView.setEGLContextClientVersion(2);
 
@@ -57,8 +57,8 @@ public class AirHockeyActivity extends AppCompatActivity {
         } else {
 
 
-                //version_toast.makeText(this, "This device does not support OpenGL ES 2.0.",
-                  //  version_toast.LENGTH_LONG).show();
+            //version_toast.makeText(this, "This device does not support OpenGL ES 2.0.",
+            //  version_toast.LENGTH_LONG).show();
             return;
         }
 
@@ -90,12 +90,12 @@ public class AirHockeyActivity extends AppCompatActivity {
 
 
 
-        //    @Override
-         //   public void onClick(View view) {
-         //       Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-          //              .setAction("Action", null).show();
-         //   }
-       // });
+    //    @Override
+    //   public void onClick(View view) {
+    //       Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+    //              .setAction("Action", null).show();
+    //   }
+    // });
 
 
 
@@ -122,3 +122,4 @@ public class AirHockeyActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
+
